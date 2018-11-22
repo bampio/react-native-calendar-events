@@ -661,7 +661,8 @@ RCT_EXPORT_METHOD(findCalendars:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
         NSMutableArray *eventCalendars = [[NSMutableArray alloc] init];
         for (EKCalendar *calendar in calendars) {
             [eventCalendars addObject:@{
-                                        @"sourceIdentifier": calendar.calendarIdentifier,
+                                        @"id": calendar.calendarIdentifier,
+                                        @"sourceIdentifier": calendar.source.sourceIdentifier,
                                         @"title": calendar.title ? calendar.title : @"",
                                         @"allowsModifications": @(calendar.allowsContentModifications),
                                         @"source": calendar.source && calendar.source.title ? calendar.source.title : @"",
