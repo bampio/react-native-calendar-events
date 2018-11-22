@@ -790,7 +790,9 @@ RCT_EXPORT_METHOD(saveCalendar:(NSString *)title
     cal.title = title;
     NSArray *arr = self.eventStore.sources;
     
+
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceIdentifier == %@",sourceIdentifier];
+
     
     
     //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"EKSource.sourceIdentifier == 'Apple'"];
