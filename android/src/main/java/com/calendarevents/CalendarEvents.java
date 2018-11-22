@@ -11,10 +11,12 @@ import android.Manifest;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.provider.CalendarContract;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.database.Cursor;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -28,11 +30,15 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Dynamic;
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TimeZone;
 import android.util.Log;
 
@@ -298,7 +304,7 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
         Uri uri = uriBuilder.build();
 
         String selection = "(Instances._ID = " + eventID + ")";
-            
+
         cursor = cr.query(uri, new String[]{
                 CalendarContract.Instances._ID,
                 CalendarContract.Instances.TITLE,
@@ -1150,5 +1156,58 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
     public void uriForCalendar(Promise promise) {
         promise.resolve(CalendarContract.Events.CONTENT_URI.toString());
     }
+
+    @ReactMethod
+    public void getSources(final Callback callback) {
+        ArrayList<ContactAccount> uniques = new ArrayList<>();
+        ContentResolver resolver = getCurrentActivity().getContentResolver();
+        Cursor cursor = null;
+        try {
+            String[] projection1 = {ContactsContract.RawContacts._ID, ContactsContract.RawContacts.ACCOUNT_NAME, ContactsContract.RawContacts.ACCOUNT_TYPE};
+
+            ArrayList<ContactAccount> sets = new ArrayList<>();
+            String selection = null;
+
+            String loginAccount = "";
+
+            cursor = resolver.query(ContactsContract.RawContacts.CONTENT_URI, projection1, selection, null, null);
+            while (cursor != null && cursor.moveToNext()) {
+                ContactAccount account = new ContactAccount();
+
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.RawContacts._ID));
+                String accountName = cursor.getString(cursor.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_NAME));
+                String accountType = cursor.getString(cursor.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_TYPE));
+
+                account.setIdentifier(id);
+                account.setTitle(accountName);
+                account.setType(accountType);
+                if (account.getType().equalsIgnoreCase("com.google")) {
+                    loginAccount = accountName;
+                }
+                account.setLogin(loginAccount);
+                sets.add(account);
+            }
+
+            Set<String> titles = new HashSet<>();
+            for (ContactAccount item : sets) {
+                if (titles.add(item.getType())) {
+                    uniques.add(item);
+                }
+            }
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.i(this.getClass().getName(), e.getMessage());
+        } finally {
+            //cursor.close();
+        }
+        Gson gson = new Gson();
+        String j = gson.toJson(uniques);
+        Log.i("json", "json " + j);
+        callback.invoke(null, j);
+    }
+
+
     //endregion
 }

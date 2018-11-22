@@ -1,20 +1,36 @@
 {
-  "name": "react-native-calendar-events",
-  "version": "1.6.3",
-  "author": "Will McMahan",
-  "license": "MIT",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
+  "_from": "git+https://github.com/jasontread/react-native-calendar-events.git",
+  "_id": "react-native-calendar-events@1.6.3",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/react-native-calendar-events",
+  "_phantomChildren": {},
+  "_requested": {
     "type": "git",
-    "url": "https://github.com/wmcmahan/react-native-calendar-events"
+    "raw": "react-native-calendar-events@git+https://github.com/jasontread/react-native-calendar-events.git",
+    "name": "react-native-calendar-events",
+    "escapedName": "react-native-calendar-events",
+    "rawSpec": "git+https://github.com/jasontread/react-native-calendar-events.git",
+    "saveSpec": "git+https://github.com/jasontread/react-native-calendar-events.git",
+    "fetchSpec": "https://github.com/jasontread/react-native-calendar-events.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/jasontread/react-native-calendar-events.git#e4e1e1aa7a0be10877cb707998604479d27ab3e0",
+  "_spec": "react-native-calendar-events@git+https://github.com/jasontread/react-native-calendar-events.git",
+  "_where": "/Projects/jason/new/TestApp",
+  "author": {
+    "name": "Will McMahan"
   },
   "bugs": {
     "url": "https://github.com/wmcmahan/react-native-calendar-events/issues"
   },
-  "homepage": "https://github.com/wmcmahan/react-native-calendar-events",
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "React Native module for IOS Calendar Events",
+  "homepage": "https://github.com/wmcmahan/react-native-calendar-events",
   "keywords": [
     "react-native",
     "react-component",
@@ -24,7 +40,17 @@
     "reminders",
     "calendar-events"
   ],
+  "license": "MIT",
+  "name": "react-native-calendar-events",
   "peerDependencies": {
     "react-native": ">=0.40.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wmcmahan/react-native-calendar-events.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.6.3"
 }
