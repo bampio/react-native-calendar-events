@@ -17,7 +17,8 @@ A React Native module to help access and save events to iOS and Android calendar
   - [findCalendars](#findcalendars)
   - [findEventById](#findeventbyid)
   - [fetchAllEvents](#fetchallevents)
-  - [getSources](#getSources)
+  - [getSources](#getgources)
+  - [saveCalendar](#savecalendar)
   - [saveEvent](#saveevent)
   - [removeEvent](#removeevent)
 - [**Event fields**](#event-fields)
@@ -157,6 +158,23 @@ RNCalendarEvents.getSources()
 
 Returns: **Promise**
  - fulfilled: Array - A list of known sources on the device
+ - rejected: Error
+
+<br/>
+
+### saveCalendar
+Creates a new calendar.
+
+```javascript
+RNCalendarEvents.saveCalendar(title, sourceIdentifier);
+```
+
+Arguments: 
+ - title: String - The title of the calendar.
+ - sourceIdentifier: String - ID of the source/account to create the calendar in.
+
+Returns: **Promise** 
+ - fulfilled: String - Created calendar's ID.
  - rejected: Error
 
 <br/>
