@@ -17,6 +17,7 @@ A React Native module to help access and save events to iOS and Android calendar
   - [findCalendars](#findcalendars)
   - [findEventById](#findeventbyid)
   - [fetchAllEvents](#fetchallevents)
+  - [getSources](#getSources)
   - [saveEvent](#saveevent)
   - [removeEvent](#removeevent)
 - [**Event fields**](#event-fields)
