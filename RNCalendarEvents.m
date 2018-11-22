@@ -652,9 +652,9 @@ RCT_EXPORT_METHOD(findCalendars:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
         reject(@"error", @"unauthorized to access calendar", nil);
         return;
     }
-
+    
     NSArray* calendars = [self.eventStore calendarsForEntityType:EKEntityTypeEvent];
-
+    
     if (!calendars) {
         reject(@"error", @"error finding calendars", nil);
     } else {
@@ -662,6 +662,7 @@ RCT_EXPORT_METHOD(findCalendars:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
         for (EKCalendar *calendar in calendars) {
             [eventCalendars addObject:@{
                                         @"id": calendar.calendarIdentifier,
+                                        @"sourceIdentifier": calendar.source.sourceIdentifier,
                                         @"title": calendar.title ? calendar.title : @"",
                                         @"allowsModifications": @(calendar.allowsContentModifications),
                                         @"source": calendar.source && calendar.source.title ? calendar.source.title : @"",
@@ -781,7 +782,7 @@ RCT_EXPORT_METHOD(getSources:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
 }
 
 RCT_EXPORT_METHOD(saveCalendar:(NSString *)title
-                  identifier:(NSString *)identifier
+                  sourceIdentifier:(NSString *)sourceIdentifier
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -790,7 +791,9 @@ RCT_EXPORT_METHOD(saveCalendar:(NSString *)title
     cal.title = title;
     NSArray *arr = self.eventStore.sources;
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceIdentifier == %@",identifier];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceIdentifier == %@",sourceIdentifier];
+
     
     
     //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"EKSource.sourceIdentifier == 'Apple'"];
