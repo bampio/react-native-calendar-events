@@ -652,9 +652,9 @@ RCT_EXPORT_METHOD(findCalendars:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
         reject(@"error", @"unauthorized to access calendar", nil);
         return;
     }
-
+    
     NSArray* calendars = [self.eventStore calendarsForEntityType:EKEntityTypeEvent];
-
+    
     if (!calendars) {
         reject(@"error", @"error finding calendars", nil);
     } else {
