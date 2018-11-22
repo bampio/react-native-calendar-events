@@ -1,44 +1,52 @@
-'use strict'
+'use strict';
 
-import { NativeModules } from 'react-native'
+import { NativeModules } from 'react-native';
 
-var CalendarEvents = NativeModules.CalendarEvents
+const RNCalendarEvents = NativeModules.RNCalendarEvents
 
 export default {
 
-  async authorizationStatus () {
-    return CalendarEvents.getCalendarPermissions()
+  authorizationStatus () {
+    return RNCalendarEvents.authorizationStatus()
   },
 
-  async authorizeEventStore () {
-    return CalendarEvents.requestCalendarPermissions()
+  authorizeEventStore () {
+    return RNCalendarEvents.authorizeEventStore()
   },
 
-  async fetchAllEvents (startDate, endDate, calendars = []) {
-    return CalendarEvents.findAllEvents(startDate, endDate, calendars)
+  fetchAllEvents (startDate, endDate, calendars = []) {
+    return RNCalendarEvents.fetchAllEvents(startDate, endDate, calendars)
   },
 
-  async findCalendars () {
-    return CalendarEvents.findCalendars()
+  findCalendars () {
+    return RNCalendarEvents.findCalendars();
   },
 
-  async findEventById (id) {
-    return CalendarEvents.findById(id)
+  findEventById (id) {
+    return RNCalendarEvents.findEventById(id);
   },
 
-  async saveEvent (title, details, options = {sync: false}) {
-    return CalendarEvents.saveEvent(title, details, options)
+  saveEvent (title, details, options = {}) {
+    return RNCalendarEvents.saveEvent(title, details, options)
   },
 
-  async removeEvent (id, options = {sync: false}) {
-    return CalendarEvents.removeEvent(id, options)
+  removeEvent (id, options = {futureEvents: false}) {
+    return RNCalendarEvents.removeEvent(id, options)
   },
 
-  async uriForCalendar () {
-    return CalendarEvents.uriForCalendar()
+  removeFutureEvents (id, options = {futureEvents: true}) {
+    return RNCalendarEvents.removeEvent(id, options)
   },
 
-  openEventInCalendar (eventID) {
-    CalendarEvents.openEventInCalendar(eventID)
-  }
+  async getSources() {
+    return CalendarEvents.getSources();
+  },
+
+  async saveCalendar(title,sourceIdentifier){
+    return CalendarEvents.saveCalendar(title,sourceIdentifier);
+  },
+
+  async removeCalendar(identifier){
+    return CalendarEvents.removeCalendar(identifier);
+  },
 }
