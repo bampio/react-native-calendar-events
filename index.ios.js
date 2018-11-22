@@ -42,10 +42,6 @@ export default {
     return CalendarEvents.getSources();
   },
 
-  async removeCalendar(identifier){
-    return CalendarEvents.removeCalendar(identifier);
-  },
-
   async saveCalendar(title,sourceIdentifier){
     return CalendarEvents.saveCalendar(title,sourceIdentifier);
   },
