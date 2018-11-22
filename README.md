@@ -246,8 +246,8 @@ Returns: **Promise**
 | Property        | Type            | Description | iOS | Android |
 | :--------------- | :---------------- | :----------- | :-----------: | :-----------: |
 | **sourceIdentifier**       | String   | Unique source ID. | ✓ | ✓ |
-| **title***   | String           | The source/account title. | ✓ | ✓ |
-| **type***   | String           | The source/account type. | ✓ | ✓ |
+| **title**   | String           | The source/account title. | ✓ | ✓ |
+| **type**   | String           | The source/account type. | ✓ | ✓ |
 
 
 ### Attendees
