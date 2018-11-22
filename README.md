@@ -147,6 +147,19 @@ Returns: **Promise**
 
 <br/>
 
+### getSources
+Returns all the available calendar source accounts on the device.
+
+```javascript
+RNCalendarEvents.getSources()
+```
+
+Returns: **Promise**
+ - fulfilled: Array - A list of known sources on the device
+ - rejected: Error
+
+<br/>
+
 ### saveEvent
 Creates or updates a calendar event. - [wiki guide](https://github.com/wmcmahan/react-native-calendar-events/wiki/Creating-basic-event)
 
@@ -221,10 +234,20 @@ Returns: **Promise**
 | **title**       | String   | The calendar’s title. | ✓ | ✓ |
 | **type**       | String   | The calendar’s type. | ✓ | ✓ |
 | **source**       | String   | The source object representing the account to which this calendar belongs. | ✓ | ✓ |
+| **sourceIdentifier**       | String   | The ID of the source object representing the account to which this calendar belongs. | ✓ | ✓ |
 | **isPrimary***   | Bool | Indicates if the calendar is assigned as primary. | ✓ | ✓ |
 | **allowsModifications***   | Bool | Indicates if the calendar allows events to be written, edited or removed. | ✓ | ✓ |
 | **color***   | String   | The color assigned to the calendar represented as a hex value. | ✓ | ✓ |
 | **allowedAvailabilities***   | Array   | The event availability settings supported by the calendar. | ✓ | ✓ |
+
+
+### Source
+
+| Property        | Type            | Description | iOS | Android |
+| :--------------- | :---------------- | :----------- | :-----------: | :-----------: |
+| **sourceIdentifier**       | String   | Unique source ID. | ✓ | ✓ |
+| **title***   | String           | The source/account title. | ✓ | ✓ |
+| **type***   | String           | The source/account type. | ✓ | ✓ |
 
 
 ### Attendees
