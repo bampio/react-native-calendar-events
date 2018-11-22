@@ -42,12 +42,11 @@ export default {
     return CalendarEvents.getSources();
   },
 
-  async saveCalendar(title,identifier){
-    return CalendarEvents.saveCalendar(title,identifier);
+  async saveCalendar(title,sourceIdentifier){
+    return CalendarEvents.saveCalendar(title,sourceIdentifier);
   },
 
   async removeCalendar(identifier){
     return CalendarEvents.removeCalendar(identifier);
   },
-
 }
