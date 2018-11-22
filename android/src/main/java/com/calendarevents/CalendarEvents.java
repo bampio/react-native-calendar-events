@@ -942,9 +942,11 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
     private WritableNativeMap serializeEventCalendar(Cursor cursor) {
 
         WritableNativeMap calendar = new WritableNativeMap();
+        String accountName = cursor.getString(cursor.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_NAME));
 
         calendar.putString("id", cursor.getString(0));
         calendar.putString("title", cursor.getString(1));
+        calendar.putString("sourceIdentifier",accountName);
         calendar.putString("source", cursor.getString(2));
         calendar.putArray("allowedAvailabilities", calendarAllowedAvailabilitiesFromDBString(cursor.getString(5)));
         calendar.putString("type", cursor.getString(6));
@@ -1178,7 +1180,8 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
                 String accountName = cursor.getString(cursor.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_NAME));
                 String accountType = cursor.getString(cursor.getColumnIndex(ContactsContract.RawContacts.ACCOUNT_TYPE));
 
-                account.setIdentifier(id);
+                account.setId(id);
+                account.setSourceIdentifier(accountName);
                 account.setTitle(accountName);
                 account.setType(accountType);
                 if (account.getType().equalsIgnoreCase("com.google")) {

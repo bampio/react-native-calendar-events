@@ -1,15 +1,19 @@
 {
+  "_args": [
+    [
+      "git+https://github.com/jasontread/react-native-calendar-events.git",
+      "/Projects/jason/new/TestApp"
+    ]
+  ],
   "_from": "git+https://github.com/jasontread/react-native-calendar-events.git",
-  "_id": "react-native-calendar-events@1.6.3",
+  "_id": "react-native-calendar-events@git+https://github.com/jasontread/react-native-calendar-events.git#e4e1e1aa7a0be10877cb707998604479d27ab3e0",
   "_inBundle": false,
   "_integrity": "",
   "_location": "/react-native-calendar-events",
   "_phantomChildren": {},
   "_requested": {
     "type": "git",
-    "raw": "react-native-calendar-events@git+https://github.com/jasontread/react-native-calendar-events.git",
-    "name": "react-native-calendar-events",
-    "escapedName": "react-native-calendar-events",
+    "raw": "git+https://github.com/jasontread/react-native-calendar-events.git",
     "rawSpec": "git+https://github.com/jasontread/react-native-calendar-events.git",
     "saveSpec": "git+https://github.com/jasontread/react-native-calendar-events.git",
     "fetchSpec": "https://github.com/jasontread/react-native-calendar-events.git",
@@ -19,7 +23,7 @@
     "/"
   ],
   "_resolved": "git+https://github.com/jasontread/react-native-calendar-events.git#e4e1e1aa7a0be10877cb707998604479d27ab3e0",
-  "_spec": "react-native-calendar-events@git+https://github.com/jasontread/react-native-calendar-events.git",
+  "_spec": "git+https://github.com/jasontread/react-native-calendar-events.git",
   "_where": "/Projects/jason/new/TestApp",
   "author": {
     "name": "Will McMahan"

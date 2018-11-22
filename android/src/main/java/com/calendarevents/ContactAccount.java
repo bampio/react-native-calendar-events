@@ -1,17 +1,26 @@
 package com.calendarevents;
 
 public class ContactAccount {
-    String identifier;
+    String id;
+    String sourceIdentifier;
     String title;
     String type;
     String login;
 
-    public String getIdentifier() {
-        return identifier;
+    public String getId() {
+        return id;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getSourceIdentifier() {
+        return sourceIdentifier;
+    }
+
+    public void setSourceIdentifier(String sourceIdentifier) {
+        this.sourceIdentifier = sourceIdentifier;
     }
 
     public String getTitle() {
