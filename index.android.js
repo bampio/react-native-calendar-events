@@ -39,14 +39,14 @@ export default {
   },
 
   async getSources() {
-    return CalendarEvents.getSources();
+    return RNCalendarEvents.getSources();
   },
 
   async saveCalendar(title,sourceIdentifier){
-    return CalendarEvents.saveCalendar(title,sourceIdentifier);
+    return RNCalendarEvents.saveCalendar(title,sourceIdentifier);
   },
 
   async removeCalendar(identifier){
-    return CalendarEvents.removeCalendar(identifier);
+    return RNCalendarEvents.removeCalendar(identifier);
   },
 }
