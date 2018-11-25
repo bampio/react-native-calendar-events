@@ -20,6 +20,7 @@ A React Native module to help access and save events to iOS and Android calendar
   - [getSources](#getgources)
   - [saveCalendar](#savecalendar)
   - [saveEvent](#saveevent)
+  - [removeCalendar](#removecalendar)
   - [removeEvent](#removeevent)
 - [**Event fields**](#event-fields)
   - [Recurrence rules](#recurrence-rule)
@@ -202,6 +203,23 @@ To update an event, the event `id` must be defined. - [wiki guide](https://githu
 ```javascript
 RNCalendarEvents.saveEvent(title, {id: 'FE6B128F-C0D8-4FB8-8FC6-D1D6BA015CDE'})
 ```
+
+<br/>
+
+
+### removeCalendar
+Removes a calendar.
+
+```javascript
+RNCalendarEvents.removeCalendar(id)
+```
+
+Arguments:
+ - id: String - The id of the calendar to remove.
+
+Returns: **Promise** 
+ - fulfilled: Bool - Successful
+ - rejected: Error
 
 <br/>
 
