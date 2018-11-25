@@ -809,7 +809,11 @@ RCT_EXPORT_METHOD(saveCalendar:(NSString *)title
         if (!success) {
             reject(@"error", @"error creating calendar", nil);
         } else {
-            resolve(@"Calendar created successfuly");
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            dict[@"id"] = cal.calendarIdentifier;
+            dict[@"sourceIdentifier"] = cal.source.sourceIdentifier;
+            dict[@"title"] = cal.title;
+            resolve(dict);
         }
     }
 }
