@@ -2,16 +2,16 @@
 
 import { NativeModules } from 'react-native';
 
-const RNCalendarEvents = NativeModules.RNCalendarEvents
+const RNCalendarEvents = NativeModules.CalendarEvents
 
 export default {
 
   authorizationStatus () {
-    return RNCalendarEvents.authorizationStatus()
+    return RNCalendarEvents.getCalendarPermissions()
   },
 
   authorizeEventStore () {
-    return RNCalendarEvents.authorizeEventStore()
+    return RNCalendarEvents.requestCalendarPermissions()
   },
 
   fetchAllEvents (startDate, endDate, calendars = []) {
