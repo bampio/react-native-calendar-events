@@ -1160,7 +1160,7 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getSources(final Callback callback) {
+    public void getSources(Promise promise) {
         ArrayList<ContactAccount> uniques = new ArrayList<>();
         ContentResolver resolver = getCurrentActivity().getContentResolver();
         Cursor cursor = null;
@@ -1208,7 +1208,7 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
         Gson gson = new Gson();
         String j = gson.toJson(uniques);
         Log.i("json", "json " + j);
-        callback.invoke(null, j);
+        promise.resolve(j);
     }
 
 
