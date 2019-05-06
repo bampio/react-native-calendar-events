@@ -224,7 +224,7 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
         if (calendars.size() > 0) {
             String calendarQuery = "AND (";
             for (int i = 0; i < calendars.size(); i++) {
-                calendarQuery += CalendarContract.Instances.CALENDAR_ID + " = " + calendars.getString(i);
+                calendarQuery += CalendarContract.Instances.CALENDAR_ID + " = " + String.valueOf((int)calendars.getDouble(i));
                 if (i != calendars.size() - 1) {
                     calendarQuery += " OR ";
                 }
