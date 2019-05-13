@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
 import android.Manifest;
 import android.database.DatabaseUtils;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
@@ -224,7 +225,7 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
         if (calendars.size() > 0) {
             String calendarQuery = "AND (";
             for (int i = 0; i < calendars.size(); i++) {
-                calendarQuery += CalendarContract.Instances.CALENDAR_ID + " = " + String.valueOf((int)calendars.getDouble(i));
+                calendarQuery += CalendarContract.Instances.CALENDAR_ID + " = " + convertIdCalendar(calendars, i);
                 if (i != calendars.size() - 1) {
                     calendarQuery += " OR ";
                 }
@@ -254,6 +255,14 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
         }, selection, null, null);
 
         return serializeEvents(cursor);
+    }
+
+    private Object convertIdCalendar(ReadableArray calendars, int i){
+        try{
+            return String.valueOf((int)calendars.getDouble(i));
+        }catch (Exception ex){
+            return calendars.getString(i);
+        }
     }
 
     private WritableNativeMap findEventById(String eventID) {
@@ -1048,6 +1057,131 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
         }
     }
 
+
+
+    @ReactMethod
+    public void saveCalendar(final ReadableMap options, final Promise promise) {
+        if (!this.haveCalendarReadWritePermissions()) {
+            promise.reject("save calendar error", "unauthorized to access calendar");
+            return;
+        }
+        try {
+            Thread thread = new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try {
+                        WritableNativeMap calendar = addCalendar(options);
+                        promise.resolve(calendar);
+                    } catch (Exception e) {
+                        promise.reject("save calendar error", e.getMessage());
+                    }
+                }
+            });
+            thread.start();
+        } catch (Exception e) {
+            promise.reject("save calendar error", "Calendar could not be saved", e);
+        }
+    }
+
+
+
+    private Integer calAccessConstantMatchingString(String string) {
+        if (string.equals("contributor")) {
+            return CalendarContract.Calendars.CAL_ACCESS_CONTRIBUTOR;
+        }
+        if (string.equals("editor")) {
+            return CalendarContract.Calendars.CAL_ACCESS_EDITOR;
+        }
+        if (string.equals("freebusy")) {
+            return CalendarContract.Calendars.CAL_ACCESS_FREEBUSY;
+        }
+        if (string.equals("override")) {
+            return CalendarContract.Calendars.CAL_ACCESS_OVERRIDE;
+        }
+        if (string.equals("owner")) {
+            return CalendarContract.Calendars.CAL_ACCESS_OWNER;
+        }
+        if (string.equals("read")) {
+            return CalendarContract.Calendars.CAL_ACCESS_READ;
+        }
+        if (string.equals("respond")) {
+            return CalendarContract.Calendars.CAL_ACCESS_RESPOND;
+        }
+        if (string.equals("root")) {
+            return CalendarContract.Calendars.CAL_ACCESS_ROOT;
+        }
+        return CalendarContract.Calendars.CAL_ACCESS_NONE;
+    }
+
+
+
+    private WritableNativeMap addCalendar(ReadableMap details) throws Exception, SecurityException {
+
+        ContentResolver cr = reactContext.getContentResolver();
+        ContentValues calendarValues = new ContentValues();
+
+        // required fields for new calendars
+        if (!details.hasKey("source")) {
+            throw new Exception("new calendars require `source` object");
+        }
+        if (!details.hasKey("name")) {
+            throw new Exception("new calendars require `name`");
+        }
+        if (!details.hasKey("title")) {
+            throw new Exception("new calendars require `title`");
+        }
+        if (!details.hasKey("color")) {
+            throw new Exception("new calendars require `color`");
+        }
+        if (!details.hasKey("accessLevel")) {
+            throw new Exception("new calendars require `accessLevel`");
+        }
+        if (!details.hasKey("ownerAccount")) {
+            throw new Exception("new calendars require `ownerAccount`");
+        }
+
+        ReadableMap source = details.getMap("source");
+
+        if (!source.hasKey("name")) {
+            throw new Exception("new calendars require a `source` object with a `name`");
+        }
+
+        Boolean isLocalAccount = false;
+        if (source.hasKey("isLocalAccount")) {
+            isLocalAccount = source.getBoolean("isLocalAccount");
+        }
+
+        if (!source.hasKey("type") && isLocalAccount == false) {
+            throw new Exception("new calendars require a `source` object with a `type`, or `isLocalAccount`: true");
+        }
+
+        calendarValues.put(CalendarContract.Calendars.ACCOUNT_NAME, source.getString("name"));
+        calendarValues.put(CalendarContract.Calendars.ACCOUNT_TYPE, isLocalAccount ? CalendarContract.ACCOUNT_TYPE_LOCAL : source.getString("type"));
+        calendarValues.put(CalendarContract.Calendars.CALENDAR_COLOR, Color.parseColor(details.getString("color")));
+        calendarValues.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, calAccessConstantMatchingString(details.getString("accessLevel")));
+        calendarValues.put(CalendarContract.Calendars.OWNER_ACCOUNT, details.getString("ownerAccount"));
+        calendarValues.put(CalendarContract.Calendars.NAME, details.getString("name"));
+        calendarValues.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, details.getString("title"));
+        // end required fields
+
+        Uri.Builder uriBuilder = CalendarContract.Calendars.CONTENT_URI.buildUpon();
+        uriBuilder.appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true");
+        uriBuilder.appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, source.getString("name"));
+        uriBuilder.appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE, isLocalAccount ? CalendarContract.ACCOUNT_TYPE_LOCAL : source.getString("type"));
+
+        Uri calendarsUri = uriBuilder.build();
+
+        Uri calendarUri = cr.insert(calendarsUri, calendarValues);
+
+        Integer id = Integer.parseInt(calendarUri.getLastPathSegment());
+
+
+        return findCalendarById(String.valueOf(id));
+    }
+
+
+
+
     @ReactMethod
     public void saveEvent(final String title, final ReadableMap details, final ReadableMap options, final Promise promise) {
         if (this.haveCalendarReadWritePermissions()) {
@@ -1191,9 +1325,15 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
                 sets.add(account);
             }
 
-            Set<String> titles = new HashSet<>();
+//            Set<String> titles = new HashSet<>();
+//            for (ContactAccount item : sets) {
+//                if (titles.add(item.getType())) {
+//                    uniques.add(item);
+//                }
+//            }
+            Set<String> arrayLogin = new HashSet<>();
             for (ContactAccount item : sets) {
-                if (titles.add(item.getType())) {
+                if (arrayLogin.add(item.getLogin())) {
                     uniques.add(item);
                 }
             }
