@@ -42,8 +42,8 @@ export default {
     return RNCalendarEvents.getSources();
   },
 
-  async saveCalendar(title,sourceIdentifier){
-    return RNCalendarEvents.saveCalendar(title,sourceIdentifier);
+  async saveCalendar(title,sourceIdentifier, options){
+    return RNCalendarEvents.saveCalendar(options);
   },
 
   async removeCalendar(identifier){
