@@ -537,7 +537,7 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
             int eventID = -1;
 
             if (details.hasKey("calendarId")) {
-                calendar = findCalendarById(details.getString("calendarId"));
+                calendar = findCalendarById(convertIdCalendar(details, "calendarId").toString());
 
                 if (calendar != null) {
                     eventValues.put(CalendarContract.Events.CALENDAR_ID, Integer.parseInt(calendar.getString("id")));
@@ -576,6 +576,15 @@ public class CalendarEvents extends ReactContextBaseJavaModule {
             return eventID;
         }
 
+    }
+
+
+    private Object convertIdCalendar(ReadableMap details, String key){
+        try{
+            return String.valueOf((int)details.getDouble(key));
+        }catch (Exception ex){
+            return details.getString(key);
+        }
     }
 
     private boolean removeEvent(String eventID, ReadableMap options) {
